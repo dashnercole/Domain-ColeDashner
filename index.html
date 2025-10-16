@@ -6,10 +6,6 @@
   <title>Cole Dashner</title>
   <meta name="description" content="Computer Science and Engineering student at The Ohio State University." />
   <meta name="theme-color" content="#0f172a" />
-
-  <!-- Added variable font for the name effect--> 
-  <link href="https://font.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
-  
   <style>
     :root{
       --bg:#0b1020; /* slate-950-ish */
@@ -66,29 +62,12 @@
     @media (max-width: 900px){
       .hero{grid-template-columns:1fr}
     }
-
-    /* Added: minimal style for the proximity letters */
-    .variable-proximity { font-family: 'Roboto Flex', sans-serif; display: inline; position: relative; }
-    .variable-proximity .word { display: inline-block; white-space: nowrap; }
-    .variable-proximity .letter { display: inline-block; will-change: font-variation-settings; }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <!-- Added replace plain logo text with animated target -->
-      <div id="name-container" class="logo" style="position: relative;">
-        <span
-          id="variable-proximity"
-          class="variable-proximity"
-          data-label="Cole Dashner"
-          data-from="'wght' 400, 'opsz' 12"
-          data-to="'wght' 1000, 'opsz' 40"
-          data-radius="100"
-          data-falloff="linear"
-          ></span>
-      </div>
+      <div class="logo">Cole Dashner</div>
       <nav>
         <a href="/">Home</a>
         <a href="about.html">About</a>
@@ -102,15 +81,15 @@
     <section class="hero">
       <div>
         <span class="pill">Engineering Student • Software / Data / Systems</span>
-        <h1>Hello, I’m <span style="color:var(--accent)">Cole Dashner</span>.</h1>
-        <p class="muted">I build clean, well‑documented projects across <strong>Java</strong>, <strong>Python</strong>, and embedded systems. I’m currently studying at <em>The Ohio State University</em>.</p>
+        <h1>Hello, I’m <span style="color:var(--accent)">YOUR NAME</span>.</h1>
+        <p class="muted">Building clean, well‑documented projects across <strong>Java</strong>, <strong>Python</strong>, and embedded systems. I’m currently studying at <em>The Ohio State University</em>.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="projects.html">View Projects</a>
           <a class="btn btn-secondary" href="about.html">About Me</a>
           <a class="btn btn-secondary" href="https://github.com/yourusername" target="_blank" rel="noopener">GitHub</a>
         </div>
         <div class="section notice" aria-live="polite">
-          <strong>Heads up:</strong> This site is a living portfolio—new projects ship as I build them.
+          <strong>Note:</strong> This site is a living portfolio—new projects ship as I build them.
         </div>
       </div>
       <div class="card">
@@ -118,7 +97,7 @@
         <div class="grid cols-2">
           <div>
             <div class="muted">Primary Stack</div>
-            <div class="tag">Java</div><div class="tag">Python</div><div class="tag">C</div><div class="tag">MATLAB</div>
+            <div class="tag">Java</div><div class="tag">Python</div><div class="tag">C++</div><div class="tag">C#</div><div class="tag">MATLAB</div>
           </div>
           <div>
             <div class="muted">Tools</div>
@@ -126,11 +105,11 @@
           </div>
           <div>
             <div class="muted">Interests</div>
-            <div class="tag">Security</div><div class="tag">Data</div><div class="tag">Systems</div>
+            <div class="tag">Security</div><div class="tag">Software Development</div><div class="tag">Systems</div>
           </div>
           <div>
             <div class="muted">Open to</div>
-            <div class="tag">Internships 2026</div><div class="tag">Research</div>
+            <div class="tag">Research Opportunities</div><div class="tag">Internship Opportunities
           </div>
         </div>
       </div>
@@ -161,7 +140,7 @@
     <!-- Contact strip -->
     <section class="section card" id="contact">
       <h2>Get in touch</h2>
-      <p class="muted">The fastest way to reach me is email. I’m also active on GitHub and LinkedIn.</p>
+      <p class="muted">Feel free to contact me through my email. I am also active on GitHub and LinkedIn.</p>
       <p>
         <a class="btn btn-primary" href="dashnercole@gmail.com">Email me</a>
         <a class="btn btn-secondary" href="https://github.com/dashnercole" target="_blank" rel="noopener">GitHub</a>
@@ -170,95 +149,10 @@
     </section>
 
     <footer class="footer">
-      <div>© <span id="year"></span> Cole Dashner — All projects on this site are my own unless credited.</div>
+      <div>© <span id="year"></span> Cole — All projects on this site are my own unless credited.</div>
     </footer>
   </div>
-  <!-- Add the script that animates your name on hover proximity -->
   <script>
-    (function(){
-      const parseSettings = (str) =>
-        new Map(str.split(", ").map(s => s.trim()).map(entry => {
-          const [axisRaw, valRaw] = entry.split(/\s+/);\
-          return [axisRaw.replace(/['"]/g, ""), parseFloat(valRaw)];
-        }));
-      const lerp = (a, b, t)=>a+(b-a)*t;
-      const dist = (x1, y1, x2, y2)=>Math.hypot(x2-x1, y2-y1);
-      const falloffFn = (type, d, r) => {
-        const n = Math.min(Math.max(1 - d/r, 0), 1);
-        if (type === "exponential") return n**2; 
-        if (type === "gaussian") return Math.exp(-((d/(r/2))**2)/2);
-        return n;
-      };
-
-      const label = span.dataset.label || "Cole Dashner";
-      const fromStr = span.dataset.from || "'wght' 400, 'opsz' 12";
-      const toStr = span.dataset.to || "'wght' 1000, 'opsz' 40";
-      const radius = Number(span.dataset.radius || 100);
-      const falloff = (span.dataset.falloff || "linear").toLowerCase();
-
-      const from = parseSettings(fromStr);
-      const to = parseSettings(toStr);
-      const axes = Array.from(from.entries()). map(([axis, fromVal]) => ({
-        axis, fromVal, toVal: to.has(axis) ? to.get(axis) : fromVal
-      }));
-
-      // Build Letters 
-      span.innerHTML = "";
-      const words = label.split(" "); 
-      const letters = [];
-      words.forEach((word, wi) => {
-        const w = document.createElement("span");
-        l.className = "letter";
-        l.textContent = ch;
-        l.style.fontVariationSettings = fromStr;
-        w.appendChild(l);
-        letters.push(l);
-      });
-      span.appendChild(w);
-      if wi < word.length - 1) span.appendChild(document.createTextNode(" "));
-    });
-    const sr = document.createElement("span");
-    sr.className = "sr-only"; sr.textContent = label; span.appendChild(sr);
-
-    //Mouse Position  relative to header
-    const pos = { x: 0, y: 0};
-    const updatePos = (cs, cy) => {
-      const react = container.getBoundingClientRect();
-      pos.x = cx - rect.left; pos.y = cy - rect.top;
-    };
-
-    // Limit scope to header area so it reacts when near the name 
-    container.addEventListener("mousemove", e => updatePos(e.clientX, e.clientY), { passive:true });
-    container.addEventListener("touchmove", e => {
-      if (e.touches[0]) updatePos(e.touches[0].clientX, e.ctouches[0].clientY);
-    }, { passive:true });
-
-    //Animate frame
-    let last = { x:null, y:null };
-    function frame(){
-      if (last.x !== pos.x || last.y !== pos.y) {
-        last = { x: pos.x, y: pos.y };
-        const cRect = container.getBoundingClientRect();
-        letters.forEach(el => { 
-          const r = el.getBoundingClientRect();
-          const cx = (r.left + r.width/2) - cRect.left;
-          const cy = (r.top + r.height/2) - cRect.top;
-          const d = dist(pos.x, pos.y, cx, cy); 
-          if (d >= radius) { 
-            el.style.fontVariationSettings = axes.map(({axis, fromVal}) => `'${axis}' ${fromVal}`).join(", ");
-          } else { 
-            const t = falloffFn(falloff, d, radius);
-            el.style.fontVariationSettings = axes.map(({axis, fromVal, toVal}) => 
-              `'${axis}' ${lerp(fromVal, totalVal, t)}`
-              ).join(", ");
-          }
-        });
-      }
-      requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-    })();
-    
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
